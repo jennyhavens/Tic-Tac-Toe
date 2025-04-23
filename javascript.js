@@ -1,7 +1,7 @@
 const Gameboard = (function () {
     const board = [];
 
-    const resetBoard = () => {
+    const createBoard = () => {
         for (let i = 0; i < 3; i++) {
             board[i] = [];
 
@@ -10,7 +10,7 @@ const Gameboard = (function () {
             }
         }
     };
-    resetBoard();
+    createBoard();
 
     const placeSymbol = (player, row, column) =>
         (board[row][column] = player.symbol);
@@ -76,15 +76,33 @@ const Gameboard = (function () {
         }
     };
 
-    return { board, placeSymbol, resetBoard, isGameTied, getWinner };
+    // const winnerPattern = (getWinner, color = "#a9dc76") => {
+    //     const cells = document.querySelectorAll(".cell");
+
+    //     cells.forEach((cell) => {
+    //         const cellNumber = Number(cell.dataset.cell);
+    //         if (getWinner.includes(cellNumber)) {
+    //             cell.style.backgroundColor = color;
+    //             cell.style.borderColor = color;
+    //         }
+    //     });
+    // };
+
+    return {
+        board,
+        createBoard,
+        isGameTied,
+        getWinner,
+        placeSymbol,
+    };
 })();
 
 function Player(name, symbol) {
-    function setName(newName) {
-        this.name = newName;
+    {
+        this.name = name;
+        this.symbol = symbol;
     }
-
-    return { setName, name, symbol };
+    return { name, symbol };
 }
 
 const GameController = (function () {
@@ -108,11 +126,10 @@ const GameController = (function () {
 
             if (winner) {
                 console.log(`${winner.name} is the winner!`);
-                console.log(Gameboard.board);
-                resetGame(winner);
+                announceWinner(winner);
             } else if (Gameboard.isGameTied()) {
                 console.log("It's a tie!");
-                resetGame("tie");
+                announceWinner("tie");
             } else {
                 setActivePlayer();
             }
@@ -121,14 +138,13 @@ const GameController = (function () {
         }
     };
 
-    const resetGame = (winner = "") => {
+    const announceWinner = (winner = "") => {
         activePlayer = player1;
-        Gameboard.resetBoard();
-        ScreenController.refreshDisplay();
+        Gameboard.createBoard();
         ScreenController.updateDisplay(activePlayer, winner);
     };
 
-    return { player1, player2, playRound, resetGame };
+    return { player1, player2, playRound, announceWinner };
 })();
 
 const ScreenController = (function () {
@@ -192,24 +208,25 @@ const ScreenController = (function () {
         }
 
         if (event.target.textContent == "New Game") {
-            GameController.resetGame();
+            GameController.announceWinner();
+            ScreenController.refreshDisplay();
             winInfo.textContent = "";
         }
 
-        if (event.target.textContent == "Set Names") {
-            if (
-                document.querySelector("#player-one-name").value &&
-                document.querySelector("#player-two-name").value
-            ) {
-                GameController.player1.setName(
-                    document.querySelector("#player-one-name").value
-                );
-                GameController.player2.setName(
-                    document.querySelector("#player-two-name").value
-                );
-                GameController.resetGame();
-            }
-        }
+        // if (event.target.textContent == "Set Names") {
+        //     if (
+        //         document.querySelector("#player-one-name").value &&
+        //         document.querySelector("#player-two-name").value
+        //     ) {
+        //         GameController.player1.setName(
+        //             document.querySelector("#player-one-name").value
+        //         );
+        //         GameController.player2.setName(
+        //             document.querySelector("#player-two-name").value
+        //         );
+        //         GameController.resetGame();
+        //     }
+        // }
     });
 
     return { updateDisplay, refreshDisplay };

@@ -50,7 +50,7 @@ body {
     content: "o";
 }
 
-.enter-name {
+.players {
     display: flex;
     gap: 20px;
 }
