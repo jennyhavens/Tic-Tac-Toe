@@ -1,0 +1,56 @@
+* {
+    --primary-color: #8bd7f7a9;
+    --secondary-color: #2eb4ed;
+    --third-color: #7be3da;
+    --neutral-color: #f8e8df;
+
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--secondary-color);
+}
+
+* {
+    box-sizing: border-box;
+    border-collapse: collapse;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+.table {
+    height: 500px;
+    width: 500px;
+    display: grid;
+    grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+}
+
+.table > button {
+    border: 1px black solid;
+    outline: 0px;
+    background-color: var(--neutral-color);
+    cursor: pointer;
+}
+
+.table > button.x::after {
+    font-size: 100px;
+    content: "x";
+}
+
+.table > button.o::after {
+    font-size: 100px;
+    content: "o";
+}
+
+.enter-name {
+    display: flex;
+    gap: 20px;
+}
